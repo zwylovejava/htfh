@@ -1,0 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--网站页脚-->
+<div class="copyright">
+    <div class="copyright-bg">
+        <div class="hotline">为生活在线充电 <span>招商热线：020-66666666</span> 客服热线：400-000000</div>
+        <div class="hotline co-ph">
+            <p>版权所有Copyright ©2017-2222</p>
+            <p>*ICP备888888号 不良信息举报</p>
+            <p>总机电话：020-10101010/194/195/196 客服电话：400-123456 传 真：400-123459
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+package com.boot.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.boot.mapper.OrderMapper;
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+	@Autowired
+	private OrderMapper orderMapper;
+	
+	@Override
+	public List<Order> findAllById(String userId) {
+		return orderMapper.findAllById(userId);
+	}
+
+	@Override
+	public void deleteOrderByOrderId(String orderId) {
+		orderMapper.deleteOrderByOrderId(orderId);
+	}
+
+	@Override
+	public void updateStateByOrderId(String orderId, int state) {
+		orderMapper.updateStateByOrderId(orderId, state);
+	}
+
+	@Override
+	public void updateConfirmByOrderId(String orderId, int confirm) {
+		orderMapper.updateConfirmByOrderId(orderId, confirm);
+	}
+
+	@Override
+	public List<Order> findAllByState(String userId, int state) {
+		return orderMapper.findAllByState(userId, state);
+	}
+
+	@Override
+	public List<Order> findAllByDelivery(String userId, int state, int delivery) {
+		return orderMapper.findAllByDelivery(userId, state, delivery);
+	}
+
+	@Override
+	public List<Order> findAllByConfirm(String userId, int state, int delivery, int confirm) {
+		return orderMapper.findAllByConfirm(userId, state, delivery, confirm);
+	}
+
+	/*      svm_zhu    */
+	@Override
+	public void addOrder(Order order, List<OrderItem> oiList) {
+		for(OrderItem oi:oiList) {
+			orderMapper.addOrderItem(oi);
+		}
+		orderMapper.addOrder(order);
+	}
+	/*      svm_zhu    */
+
+
+	@Override
+	public Order findOrderByOrderId(String orderId) {
+		return orderMapper.findOrderByOrderId(orderId);
+	}
+
+}

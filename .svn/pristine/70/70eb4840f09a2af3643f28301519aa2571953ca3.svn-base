@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.OrderMapper">
+
+	<!-- void addOrder(Order order); -->
+    <insert id="addOrder" parameterType="Order" >
+    insert into orders (order_id, receive_id, user_id, 
+      order_time, money, state, 
+      confirm, delivery)
+    values (#{orderId,jdbcType=VARCHAR}, #{receiveId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{money,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}, 
+      #{confirm,jdbcType=INTEGER}, #{delivery,jdbcType=INTEGER})
+  </insert>
+  <!-- void addOrderItem(OrderItem oi); -->
+    <insert id="addOrderItem" parameterType="OrderItem" >
+    insert into order_item (ORDER_ID, PRODUCT_ID, BUY_NUM, 
+      ASSESS)
+    values (#{orderId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{buyNum,jdbcType=INTEGER}, 
+      #{assess,jdbcType=VARCHAR})
+  </insert>
+</mapper>

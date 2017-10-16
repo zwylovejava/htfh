@@ -1,0 +1,9 @@
+package com.boot.service;
+
+import com.boot.pojo.Address;
+
+public interface AddressService {
+
+	public void addAddress(Address address);
+
+}

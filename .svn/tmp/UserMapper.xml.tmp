@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.UserMapper">
+	<!-- 查询所有用户信息 -->
+    <select id="findAll" resultMap="userRM">
+        select * from user_p left join user_info on user_p.user_id = user_info_id
+    </select>
+    <!-- 根据用户名查询用户信息 -->
+    <select id="findUserByName" resultMap="userRM">
+    	select * from user_p left join user_info on user_p.user_id = user_info_id where user_p.username = #{username}
+    </select>
+    <!-- 用户信息封装 -->
+    <resultMap type="com.boot.pojo.User" id="userRM" autoMapping="true">
+    	<id column="user_id" property="userId"/>
+    	<association property="userInfo" javaType="com.boot.pojo.UserInfo" resultMap="infoRM"/>
+    </resultMap>
+    <resultMap type="com.boot.pojo.UserInfo" id="infoRM" autoMapping="true">
+    	<id column="user_info_id" property="userInfoId"/>
+    </resultMap>
+    
+    <!-- 根据ID更新用户信息 -->
+   	<update id="updateUser">
+   		update user_p
+   		<set>
+   			<if test="username != null">username = #{username},</if>
+   			<if test="phoneNum != null">phone_num = #{phoneNum},</if>
+   			<if test="email != null">email = #{email},</if>
+   		</set>
+   		where user_id = #{userId}
+   	</update>
+<<<<<<< .mine
+	<insert id="insertUser">
+		insert into user_p(user_id,username,password,phone_num,email) values(#{userId},#{username},#{password},#{phoneNum},#{email})			
+	</insert>
+
+=======
+   	
+>>>>>>> .r83
+
+</mapper>

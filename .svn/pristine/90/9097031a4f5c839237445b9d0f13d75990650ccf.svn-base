@@ -1,0 +1,26 @@
+package com.boot.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.boot.mapper.OrderMapper;
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+	@Autowired
+	private OrderMapper orderMapper;
+
+	@Override
+	public void addOrder(Order order, List<OrderItem> orderItemList) {
+		orderMapper.addOrder(order);
+		for(OrderItem oi:orderItemList) {
+			orderMapper.addOrderItem(oi);
+		}
+		
+	}
+
+}

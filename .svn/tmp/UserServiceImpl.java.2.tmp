@@ -1,0 +1,73 @@
+package com.boot.service;
+
+import com.boot.mapper.UserInfoMapper;
+import com.boot.mapper.UserMapper;
+import com.boot.pojo.Order;
+import com.boot.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired    //userMapper对象应该由spring创建
+    private UserMapper userMapper;
+    @Autowired    //userInfoMapper对象应该由spring创建
+    private UserInfoMapper userInfoMapper;
+
+    @Override
+    public List<User> findAll() {
+        return userMapper.findAll();
+    }
+
+	@Override
+	public void updateUser(User user) {
+		userInfoMapper.updateUserInfo(user);
+		userMapper.updateUser(user);
+	}
+
+	@Override
+	public User findUserByName(String username) {
+		return userMapper.findUserByName(username);
+	}
+
+	@Override
+	public User ajaxCheckName(String username) {
+		
+		return userMapper.ajaxCheckName(username);
+	}
+
+
+	@Override
+	public User ajaxPhoneNum(String phoneNum) {
+		
+		return userMapper.ajaxPhoneNum(phoneNum);
+	}
+<<<<<<< .mine
+
+	@Override
+	public User longinByUP(String username, String password) {
+		
+		return userMapper.longinByUP(username,password);
+	}
+
+	@Override
+	public void updatePasswordByphone(String password, String phoneNum) {
+		userMapper.updatePasswordByphone(password,phoneNum);
+		
+	}
+
+	@Override
+	public void insertUser(User user) {
+		String uuid = UUID.randomUUID().toString();
+		user.setUserId(uuid);
+		userMapper.insertUser(user);
+		
+	}
+=======
+
+>>>>>>> .r83
+}

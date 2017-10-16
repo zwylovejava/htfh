@@ -1,0 +1,13 @@
+package com.boot.mapper;
+
+import java.util.List;
+
+import com.boot.pojo.Product;
+
+public interface ProductMapper {
+
+	List<Product> findAll();
+
+	Product findProdInfoById(String productId);
+
+}

@@ -1,0 +1,31 @@
+package com.boot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.Product;
+import com.boot.service.ProductService;
+
+@Controller
+public class ProductController {
+	@Autowired
+	private ProductService productService;
+	@RequestMapping("/product/findAll")
+	public String findAll(Model model){
+		List<Product> productList=productService.findAll();
+		model.addAttribute("productList", productList);
+		return "product/prodList";
+	}
+	@RequestMapping("/product/findProdInfo")
+	public String findProdInfo(Model model,String productId){
+		Product product=productService.findProdInfoById(productId);
+		model.addAttribute("product", product);
+		return "product/prodInfo";
+	}
+	
+
+}

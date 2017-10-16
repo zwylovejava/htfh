@@ -1,0 +1,12 @@
+package com.boot.service;
+
+import java.util.List;
+
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+
+public interface OrderService {
+
+	void addOrder(Order order, List<OrderItem> orderItemList);
+
+}

@@ -1,0 +1,13 @@
+package com.boot.service;
+
+import java.util.List;
+
+import com.boot.pojo.Classific;
+
+public interface ClassificService {
+
+	List<Classific> findAll();
+
+	Classific findProductByClassificId(String classificId);
+
+}

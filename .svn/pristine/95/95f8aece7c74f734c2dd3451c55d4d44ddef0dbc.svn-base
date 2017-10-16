@@ -1,0 +1,31 @@
+package com.boot.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.Classific;
+import com.boot.pojo.Page;
+import com.boot.service.ClassificService;
+import com.boot.service.ProductService;
+
+@Controller
+public class ClassificController {
+	@Autowired
+	private ClassificService classificService;
+	@Autowired
+	private ProductService productService;
+	@RequestMapping("product/findProductByClassificId")
+	public String findProductByClassificId(Classific classific,Model model,Page page){
+		Number count = productService.findCount();
+		page.setRecords(count.intValue());
+		classific=classificService.findProductByClassificId(classific.getClassificId());
+		model.addAttribute("classific", classific);
+		model.addAttribute("page", page);
+		return "product/prodClassificList";
+	}
+	
+	
+
+}

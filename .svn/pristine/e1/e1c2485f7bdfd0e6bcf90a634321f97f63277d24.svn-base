@@ -1,0 +1,124 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/common.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script src="js/common_js.js" type="text/javascript"></script>
+<script src="js/footer.js" type="text/javascript"></script>
+<script src="Plugins/laydate/laydate.js" type="text/javascript"></script>
+<title>联系我们</title>
+</head>
+
+<body>
+<!-- 引入页头 -->
+<%@ include file="/home/head.jsp" %>
+<!--购物车样式-->
+ <div class="hd_Shopping_list" id="Shopping_list">
+   <div class="s_cart"><a href="#">我的购物车</a> <i class="ci-right">&gt;</i><i class="ci-count" id="shopping-amount">0</i></div>
+   <div class="dorpdown-layer">
+    <div class="spacer"></div>
+	 <!--<div class="prompt"></div><div class="nogoods"><b></b>购物车中还没有商品，赶紧选购吧！</div>-->
+	 <ul class="p_s_list">	   
+		<li>
+		    <div class="img"><img src="images/tianma.png"></div>
+		    <div class="content"><p class="name"><a href="#">产品名称</a></p><p>颜色分类:紫花8255尺码:XL</p></div>
+			<div class="Operations">
+			<p class="Price">￥55.00</p>
+			<p><a href="#">删除</a></p></div>
+		  </li>
+		</ul>		
+	 <div class="Shopping_style">
+	 <div class="p-total">共<b>1</b>件商品　共计<strong>￥ 515.00</strong></div>
+	  <a href="Shop_cart.html" title="去购物车结算" id="btn-payforgoods" class="Shopping">去购物车结算</a>
+	 </div>	 
+   </div>
+ </div>
+</div>
+<!--菜单栏-->
+	<div class="Navigation" id="Navigation">
+		 <ul class="Navigation_name">
+			<li><a href="Home.html">首页</a></li>
+			<li><a href="#">你身边的超市</a></li>
+			<li><a href="#">预售专区</a><em class="hot_icon"></em></li>
+			<li><a href="products_list.html">商城</a></li>
+			<li><a href="#">半小时生活圈</a></li>
+			<li><a href="#">好评商户</a></li>
+			<li><a href="#">热销活动</a></li>
+			<li><a href="Brands.html">联系我们</a></li>
+		 </ul>			 
+		</div>
+	<script>$("#Navigation").slide({titCell:".Navigation_name li",trigger:"click"});</script>
+    </div>
+<!--发布公告样式-->
+<div class="Inside_pages clearfix">
+<div class="left_style">
+<!--发布公告-->
+</div>
+<!--右侧内容样式-->
+<div class="right_style" style="height:310px">
+  <div style="height:10px"></div>
+  <!--内容详细-->
+   <div class="title_style"><em></em>联系方式</div>
+   <div class="content_style">
+    <div class="add_Bulletin">
+     <ul class="add_shops_style">
+      <li><h1>客服：400-743235</h1>
+      <div class="add_right_style"> 
+      <ul class="inline date_inline">
+            </ul></div></li>
+      <li><h1>邮箱：enquiries@positiveadvertising.com</h1>
+      <div class="add_right_style"> 
+      <ul class="inline date_inline">
+            </ul></div></li>
+      <li><h1>地址:广州市天河区林和街道天寿路105号天寿大厦3楼</h1>
+      <div class="add_Bulletin">
+     <ul class="add_shops_style">
+      <li><h1>百度地图</h1>
+      <div class="add_right_style"> 
+      <ul class="inline date_inline">
+            </ul></div></li>
+	 <br/>
+     </ul>
+     </div>
+   </div>
+</div>
+</div>
+<!--网站地图-->
+<%@ include file="/home/map.jsp" %>
+<!--网站地图END-->
+<!--引入页脚-->
+<center>
+	<%@ include file="/home/foot.jsp" %>
+</center>
+</body>
+</html>
+<script>
+var start = {
+    elem: '#start',
+    format: 'YYYY/MM/DD hh:mm:ss',
+    min: laydate.now(), //设定最小日期为当前日期
+    max: '2099-06-16 23:59:59', //最大日期
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+         end.min = datas; //开始日选好后，重置结束日的最小日期
+         end.start = datas //将结束日的初始值设定为开始日
+    }
+};
+var end = {
+    elem: '#end',
+    format: 'YYYY/MM/DD hh:mm:ss',
+    min: laydate.now(),
+    max: '2099-06-16 23:59:59',
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+        start.max = datas; //结束日选好后，重置开始日的最大日期
+    }
+};
+laydate(start);
+laydate(end);
+</script>

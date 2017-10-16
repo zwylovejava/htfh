@@ -1,0 +1,174 @@
+package com.boot.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+import com.boot.service.OrderItemService;
+import com.boot.service.OrderService;
+
+@Controller
+public class OrderController {
+
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private OrderItemService orderItemService;
+	
+	//订单列表
+	@RequestMapping("/toOrder")
+	public String toOrder(HttpSession session, Model model) {
+		/*
+		User user = (User)session.getAttribute("sessionUser");
+		String userId = user.getUserId();
+		testUserIdbyOrderController
+		*/
+		List<Order> orderList = orderService.findAllById("testUserIdbyOrderController");
+		List<String> oIdList = new ArrayList<String>();
+		for (Order order : orderList) {
+			String orderId = order.getOrderId();
+			oIdList.add(orderId);
+		}
+		
+		List<OrderItem> oItemsList = orderItemService.findAllByOrderId(oIdList);
+		
+		model.addAttribute("oItemsList", oItemsList);
+		model.addAttribute("orderList", orderList);
+		
+		return "order/orderList";
+	}
+	
+	//删除订单
+	@RequestMapping("/deleteOrder/{orderId}")
+	public String deleteOrder(@PathVariable String orderId) {
+		orderService.deleteOrderByOrderId(orderId);
+		orderItemService.deleteOrderByOrderId(orderId);
+		return "redirect:/toOrder.action";
+	}
+	
+	//订单付款
+	@RequestMapping("/payOrder/{orderId}")
+	public String payOrder(@PathVariable String orderId) {
+		int state = 1;
+		orderService.updateStateByOrderId(orderId, state);
+		return "redirect:/toOrder.action";
+	}
+	
+	//确认收货
+	@RequestMapping("/takeOrder/{orderId}")
+	public String takeOrder(@PathVariable String orderId) {
+		int confirm = 1;
+		orderService.updateConfirmByOrderId(orderId, confirm);
+		return "redirect:/toOrder.action";
+	}
+	
+	//查询待付款
+	@RequestMapping("/obligationOrder")
+	public String obligationOrder(HttpSession session, Model model) {
+		/*
+		User user = (User)session.getAttribute("sessionUser");
+		String userId = user.getUserId();
+		testUserIdbyOrderController
+		*/
+		int state = 0;
+		List<Order> orderList = orderService.findAllByState("testUserIdbyOrderController", state);
+		List<String> oIdList = new ArrayList<String>();
+		for (Order order : orderList) {
+			String orderId = order.getOrderId();
+			oIdList.add(orderId);
+		}
+		
+		List<OrderItem> oItemsList = orderItemService.findAllByOrderId(oIdList);
+		
+		model.addAttribute("oItemsList", oItemsList);
+		model.addAttribute("orderList", orderList);
+		
+		return "order/orderList";
+	}
+	
+	//查询待发货
+	@RequestMapping("/deliverOrder")
+	public String deliverOrder(HttpSession session, Model model) {
+		/*
+		User user = (User)session.getAttribute("sessionUser");
+		String userId = user.getUserId();
+		testUserIdbyOrderController
+		 */
+		int state = 1;
+		int delivery = 0;
+		List<Order> orderList = orderService.findAllByDelivery("testUserIdbyOrderController", state, delivery);
+		List<String> oIdList = new ArrayList<String>();
+		for (Order order : orderList) {
+			String orderId = order.getOrderId();
+			oIdList.add(orderId);
+		}
+		
+		List<OrderItem> oItemsList = orderItemService.findAllByOrderId(oIdList);
+		
+		model.addAttribute("oItemsList", oItemsList);
+		model.addAttribute("orderList", orderList);
+		
+		return "order/orderList";
+	}
+	
+	//查询待收货
+	@RequestMapping("/receiveOrder")
+	public String receiveOrder(HttpSession session, Model model) {
+		/*
+		User user = (User)session.getAttribute("sessionUser");
+		String userId = user.getUserId();
+		testUserIdbyOrderController
+		 */
+		int state = 1;
+		int delivery = 1;
+		int confirm = 0;
+		List<Order> orderList = orderService.findAllByConfirm("testUserIdbyOrderController", state, delivery, confirm);
+		List<String> oIdList = new ArrayList<String>();
+		for (Order order : orderList) {
+			String orderId = order.getOrderId();
+			oIdList.add(orderId);
+		}
+		
+		List<OrderItem> oItemsList = orderItemService.findAllByOrderId(oIdList);
+		
+		model.addAttribute("oItemsList", oItemsList);
+		model.addAttribute("orderList", orderList);
+		
+		return "order/orderList";
+	}
+	
+	//查询成功交易
+	@RequestMapping("/successOrder")
+	public String successOrder(HttpSession session, Model model) {
+		/*
+		User user = (User)session.getAttribute("sessionUser");
+		String userId = user.getUserId();
+		testUserIdbyOrderController
+		 */
+		int state = 1;
+		int delivery = 1;
+		int confirm = 1;
+		List<Order> orderList = orderService.findAllByConfirm("testUserIdbyOrderController", state, delivery, confirm);
+		List<String> oIdList = new ArrayList<String>();
+		for (Order order : orderList) {
+			String orderId = order.getOrderId();
+			oIdList.add(orderId);
+		}
+		
+		List<OrderItem> oItemsList = orderItemService.findAllByOrderId(oIdList);
+		
+		model.addAttribute("oItemsList", oItemsList);
+		model.addAttribute("orderList", orderList);
+		
+		return "order/orderList";
+	}
+}

@@ -1,0 +1,26 @@
+package com.boot.service;
+
+import com.boot.mapper.UserMapper;
+import com.boot.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired    //userMapper对象应该由spring创建
+    private UserMapper userMapper;
+
+    @Override
+    public List<User> findAll() {
+        return userMapper.findAll();
+    }
+
+	@Override
+	public User ajaxCheckName(String username) {
+		
+		return userMapper.ajaxCheckName(username);
+	}
+}

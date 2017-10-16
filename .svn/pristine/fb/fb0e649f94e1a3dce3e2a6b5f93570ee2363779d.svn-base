@@ -1,0 +1,46 @@
+package com.boot.controller;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.User;
+import com.boot.service.UserService;
+import com.boot.tool.SendMailUtil;
+import com.boot.tool.ValidateEmailWebService;
+
+@Controller
+public class LoginController {
+	@Autowired
+	private UserService userService;
+	@RequestMapping("/regist")
+	public String regist(){
+		return "/login/regist";
+	}
+	@RequestMapping("/ajaxCheckname")
+	public void check(String username,HttpServletResponse response) throws IOException {
+		User user = userService.ajaxCheckName(username);
+		response.getWriter().write(user==null?"true":"false");
+	}
+	
+	@RequestMapping("/ajaxCheckEmai")
+	public void checkEmail(String email,HttpServletResponse response) throws IOException {
+		ValidateEmailWebService vali = new ValidateEmailWebService();
+		short num = vali.getValidateEmailWebServiceSoap().validateEmailAddress(email);
+		
+		response.getWriter().write(num==1||num==0?"true":"false");
+	}
+	@RequestMapping("/toregist")
+	public String toregist(User user){
+		
+		SendMailUtil.send(user.getEmail(),"<p>恭喜你注册本网站,祝你购物愉快</p><a href='localhost:8090'>进入网站</a>","易通市场");
+		
+		
+		return "forward:/";
+	}
+	
+}

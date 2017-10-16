@@ -1,0 +1,24 @@
+package com.boot.service;
+
+import java.util.List;
+
+import com.boot.pojo.ClassAll;
+import com.boot.pojo.Product;
+
+public interface ProductService {
+
+	List<Product> findAll();
+
+	Product findProdInfoById(String productId);
+
+	List<ClassAll> findAllClass();
+
+	Number findCount();
+
+	List<Product> findByPage(Integer perpage, Integer currentPage);
+
+	List<Product> findProductByprice(Double minprice, Double maxprice, Integer perpage, Integer currentpage,String classificId,String searchName);
+
+	List<Product> findProductOrderByPrice(Integer perpage, Integer currentpage,Integer state);
+	
+}

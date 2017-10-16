@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.BackProductMapper">
+	<resultMap type="com.boot.pojo.Product" id="productRM" autoMapping="true">
+		<id property="productId" column="product_id"/>
+		<association property="classific" javaType="com.boot.pojo.Classific">
+			<id property="classificId" column="classific_id"/>
+			<result property="classificName" column="classific_name"/>
+		</association>
+	</resultMap>
+	<select id="findCount" resultType="int">
+	select count(*) from product p  left join classific c on p.classific_id=c.classific_id
+	 <where>
+		<if test="minprice!=null">price>#{minprice}</if>
+		<if test="maxprice!=null"> and price&lt;#{maxprice}</if>
+		<if test="classificName!=null"> and classific_name like concat("%",#{classificName},"%") </if>
+		<if test="proName!=null"> and pro_name like concat("%",#{proName},"%")</if>
+	</where>
+	</select>
+	<select id="findproductListByKeyAndPage" resultMap="productRM">
+		select p.*,c.classific_name from product p  left join classific c on p.classific_id=c.classific_id
+	 <where>
+	<if test="minprice!=null">price>#{minprice}</if>
+	<if test="maxprice!=null"> and price&lt;#{maxprice}</if>
+	<if test="classificName!=null"> and classific_name like concat("%",#{classificName},"%")</if>
+	<if test="proName!=null"> and pro_name like concat("%",#{proName},"%")</if>
+	</where>
+	 limit #{currentPage},
+	#{perpage}
+	</select>
+	<delete id="deleteProducts">
+		delete from product where product_id in (<foreach collection="array" item="id" separator=",">
+		#{id}</foreach>)
+	</delete>
+	
+	
+	
+	
+	
+</mapper>

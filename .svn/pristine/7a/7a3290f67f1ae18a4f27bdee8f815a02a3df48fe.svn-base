@@ -1,0 +1,12 @@
+package com.boot.mapper;
+
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+
+public interface OrderMapper {
+
+	void addOrder(Order order);
+
+	void addOrderItem(OrderItem oi);
+
+}

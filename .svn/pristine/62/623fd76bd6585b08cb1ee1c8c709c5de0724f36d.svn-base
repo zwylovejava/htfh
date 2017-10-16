@@ -1,0 +1,16 @@
+server:
+  port: 8090
+  context-path: /
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://176.114.24.76:3306/springboot
+    username: root
+    password: 654123
+  mvc:
+    view:
+      prefix: /WEB-INF/pages/
+      suffix: .jsp
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mybatis/mappers/*.xml

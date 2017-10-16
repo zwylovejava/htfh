@@ -1,0 +1,204 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+
+	
+<title>后台管理系统</title>
+<meta name="author" content="DeathGhost" />
+<!-- <link rel="stylesheet" type="text/css" href="/back/css/common.css">
+<link rel="stylesheet" type="text/css" href="/back/css/pagination.css"> -->
+<link rel="stylesheet" type="text/css" href="/back/css/style.css">
+<script src="/back/js/jquery.min.js"></script>
+<script src="/back/js/jquery.pagination.js"></script>
+<script src="/back/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/layer/layer.js"></script>
+<script>
+
+
+	(function($){
+		$(window).load(function(){
+			
+			$("a[rel='load-content']").click(function(e){
+				e.preventDefault();
+				var url=$(this).attr("href");
+				$.get(url,function(data){
+					$(".content .mCSB_container").append(data); //load new content inside .mCSB_container
+					//scroll-to appended content 
+					$(".content").mCustomScrollbar("scrollTo","h2:last");
+				});
+			});
+			
+			$(".content").delegate("a[href='top']","click",function(e){
+				e.preventDefault();
+				$(".content").mCustomScrollbar("scrollTo",$(this).attr("href"));
+			});
+			
+		});
+	})(jQuery);
+</script>
+</head>
+<body>
+<!--header-->
+<%@ include file="../head.jsp" %>
+
+<!-- ===============================左侧导航栏<<<<<<<>>>>>>>>>>主页面============================= -->
+<%-- <a href="/orderback/deleteOrder?orderId=${order.orderId}&orderby=${orderby}&value=${value}&page=${page}"
+ title="删除" class="link_icon">&#100;</a> --%>
+
+<section class="rt_wrap content mCustomScrollbar">
+ <div class="rt_content">
+      <div class="page_title">
+       <h2 class="fl">订单列表</h2>
+       <a class="fr top_rt_btn add_icon" href="/back/toBackDetail">添加商品</a>
+      </div>
+      <section class="mtb">
+       <select class="select" id="select_me">
+       
+       
+   <!-- =================================================================================================== -->
+       
+   		<option value="1" <c:if test="${orderby==1}">selected="selected"</c:if> >所有订单</option>
+        <option value="2" <c:if test="${orderby==2}">selected="selected"</c:if> >订单编号</option>
+        <option value="3" <c:if test="${orderby==3}">selected="selected"</c:if> >收件人</option>
+        <option value="4" <c:if test="${orderby==4}">selected="selected"</c:if> >联系电话</option>
+        
+        
+       </select>
+       <input type="text" class="textbox textbox_225" value="${value}" id="value_me"/>
+       <input type="button" value="查询" class="group_btn" id="fuzzyQuery" />
+      </section>
+      
+      <script type="text/javascript">
+      	$("#fuzzyQuery").click(function(){
+      		var orderby = $("#select_me  option:selected").val();
+      		var value_me = $("#value_me").val();
+      		window.location.href="/orderback/queryOrder?orderby="+orderby+"&value="+value_me;
+      	});
+      	
+      	var select_me = $("#select_me option:selected").val();
+      	if(select_me==1){
+      		
+      		$("#value_me").attr("disabled","disabled").val("");
+      		<!--$("#fuzzyQuery").css("background-color","#ABABAB");-->
+      	}
+      	$("#select_me").change(function(){
+      		var select_me = $("#select_me option:selected").val();
+      		if(select_me!=1){
+      			$("#value_me").removeAttr("disabled").attr("placeholder","启用模糊查询");
+          		<!--$("#fuzzyQuery").css("background-color","#228B22");-->
+      		}else{
+      			$("#value_me").attr("disabled","disabled").val("");
+          		<!--$("#fuzzyQuery").css("background-color","#ABABAB");-->
+      		}
+      		
+      	}); 
+      </script>
+      
+      
+      <table class="table">
+       <tr>
+        <th>订单编号</th>
+        <th>收件人</th>
+        <th>联系电话</th>
+        <th>收件人地址</th>
+        <th>订单金额</th>
+        <th>下单时间</th>
+        <th>操作</th>
+       </tr>
+       
+       <!-- ===================             ================= -->
+       <c:forEach items="${orderList}" var="order">
+	       <tr>
+	        <td class="center">${order.orderId}</td>
+	        <td>${order.address.receiveP}</td>
+	        <td>${order.address.phone}</td>
+	        <td>
+	         <address>${order.address.area}${order.address.street}</address>
+	        </td>
+	        <td class="center"><strong class="rmb_icon">${order.money}</strong></td>
+	        <td class="center"><fmt:formatDate value="${order.orderTime }" pattern="yyyy-MM-dd"/></td>
+	        <td class="center">
+	         <a u="a" href="#" url_me="/toBackOrderDetail/${order.orderId}" title="查看订单" class="link_icon" >&#118;</a>
+	         <a u="b" href="#" url_me="/orderback/deleteOrder?orderId=${order.orderId}&orderby=${orderby==null?1:orderby}&value=${value}&page=${page}"
+ 					title="删除" class="link_icon">&#100;</a>
+	        </td>
+	       </tr>
+       </c:forEach>
+      </table>
+      <script type="text/javascript">
+      	$(".link_icon[u='a']").bind("click",function(){
+      		var url_me = $(this).attr("url_me");
+        		layer.open({
+		        type: 2,
+		        title: '订单详情',
+		        maxmin: true,
+		        shadeClose: true, //点击遮罩关闭层
+		        area : ['1200px' , '650px'],
+		        content:url_me	    
+		    });
+      	})
+      	$(".link_icon[u='b']").bind("click",function(){
+      		var url_me = $(this).attr("url_me");
+      		layer.open({
+	  			  content: '你确认要删除?',
+	  			  icon: 3,
+	  			  btn: ['确认', '取消'],
+	  			  yes: function(index, layero){
+	  					var url=url_me;
+	  				    window.location.href=url;
+	  			  },
+	  			  btn2: function(index, layero){
+	  				  layer.close();
+	  			  }
+	  		});
+      	})
+      
+      </script>
+      
+      
+      <aside class="paging">
+      
+      
+      
+      </aside>
+      	<input id="pages_me" value="${pages}" hidden="hidden">
+      	<input id="page_me" value="${page}" hidden="hidden">
+      	<div class="M-box3" align="center" style="font-size: 30px;"></div>
+
+		<script type="text/javascript">
+		
+		var pages_me = $("#pages_me").val();
+		var page_me = $("#page_me").val();
+		var ordey_me = $("#select_me  option:selected").val();
+		var value_me = $("#value_me").val();
+		$('.M-box3').pagination({
+			current:page_me,
+		    pageCount:pages_me,
+		    jump:true,
+		    coping:true,
+		    homePage:'首页',
+		    endPage:'末页',
+		    prevContent:'上页',
+		    nextContent:'下页',
+		    
+		    callback:function(api){
+		    
+		    	var page_me_current = api.getCurrent();
+		    
+				window.location.href="/orderback/queryOrder?page="+page_me_current+"&orderby="+ordey_me+"&value="+value_me;
+		    }
+		});
+		$(".M-box3 input[type='text']").css("width","80px");
+		</script>
+		
+      
+ </div>
+</section>
+</body>
+</html>
+
+        

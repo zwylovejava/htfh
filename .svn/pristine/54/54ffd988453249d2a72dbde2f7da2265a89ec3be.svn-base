@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.ClassificMapper">
+	<select id="findAll"  resultMap="classificRM">
+		select * from classific
+	</select>
+    <resultMap type="Classific" id="classificRM">
+    	<id property="classificId" column="classific_id"/>
+    	<result property="classificName" column="classific_name"/>
+    	<collection property="productList" ofType="Product" resultMap="productRM">
+    		<id property="productId" column="product_id"/>
+    	</collection>
+    </resultMap>
+    <resultMap type="Product" id="productRM" autoMapping="true">
+		<id property="productId" column="product_id"/>
+	</resultMap>
+	
+    <select id="findProductByClassificId" resultMap="classificRM">
+    	select c.classific_name,p.* from classific c left 
+    	join product p on c.classific_id=p.classific_id where 
+    	<if test="classific!=null">
+    	 p.classific_id=#{classificId}
+    	</if>
+    	
+    </select>
+</mapper>

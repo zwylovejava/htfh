@@ -1,0 +1,54 @@
+package com.boot.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.boot.pojo.Order;
+import com.boot.pojo.OrderItem;
+
+public interface OrderService {
+
+	public List<Order> findAllById(String userId);
+
+	public void deleteOrderByOrderId(String orderId);
+
+	public void updateStateByOrderId(String orderId, int state);
+
+	public void updateConfirmByOrderId(String orderId, int confirm);
+
+	public List<Order> findAllByState(String userId, int state);
+
+	public List<Order> findAllByDelivery(String userId, int state, int delivery);
+
+	public List<Order> findAllByConfirm(String userId, int state, int delivery, int confirm);
+
+	public Order findOrderByOrderId(String orderId);
+	/*=============svm_zhu==============*/
+	
+	public void addOrder(Order order, List<OrderItem> oiList);
+	
+	public List<Order> finaAll();
+	/** 分页查询 一页10行
+	 * @param page 第几页
+	 * @return List<Order>
+	 */
+	public List<Order> findbypage(Integer page);
+	/**
+	 * 统计订单总数
+	 * @return
+	 */
+	public Integer getOrderCount();
+	
+	public Map<String, Object> findOrderListbyall(Integer orderby, String value, Integer page);
+	/*=============svm_zhu==============*/
+
+	public void updateDeliveryByOrderId(String orderId, int delivery);
+
+	public Integer[] findStatesById(String productId);
+
+
+
+
+
+}

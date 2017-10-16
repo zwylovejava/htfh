@@ -1,0 +1,62 @@
+package com.boot.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.boot.mapper.ProductMapper;
+import com.boot.pojo.ClassAll;
+import com.boot.pojo.Product;
+
+@Service
+public class ProductServiceImpl implements ProductService{
+	@Autowired
+	private ProductMapper productMapper;
+
+	@Override
+	public List<Product> findAll() {
+		return productMapper.findAll();
+	}
+
+	@Override
+	public Product findProdInfoById(String productId) {
+		return productMapper.findProdInfoById(productId);
+	}
+
+	@Override
+	public List<ClassAll> findAllClass() {
+		return productMapper.findAllClass();
+	}
+
+	@Override
+	public Number findCount() {
+		return productMapper.findCount();
+	}
+
+	@Override
+	public List<Product> findByPage(Integer perpage, Integer currentPage) {
+		currentPage=(currentPage-1)*perpage;
+		return productMapper.findByPage(perpage,currentPage);
+	}
+
+	@Override
+	public List<Product> findProductByprice(Double minprice, Double maxprice,Integer perpage, Integer currentpage,String classificId,String searchName) {
+		
+		currentpage=(currentpage-1)*perpage;
+		
+		return productMapper.findProductByprice(minprice,maxprice,perpage,currentpage,classificId,searchName);
+	}
+
+	@Override
+	public List<Product> findProductOrderByPrice(Integer perpage, Integer currentpage,Integer state) {
+		currentpage=(currentpage-1)*perpage;
+		if(state==1){
+			return productMapper.findProductOrderByPrice( perpage,  currentpage);
+		}else{
+			return productMapper.findProductOrderByPriceDesc( perpage,  currentpage);
+		}
+		
+	}
+	
+}

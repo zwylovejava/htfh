@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.ProductMapper">
+
+    <select id="findAll" resultMap="productRM">
+        select p.*,c.classific_name from product p  left join classific c on p.classific_id=c.classific_id
+    </select>
+	<resultMap type="com.boot.pojo.Product" id="productRM" autoMapping="true">
+		<id property="productId" column="product_id"/>
+		<association property="classific" javaType="com.boot.pojo.Classific">
+			<id property="classificId" column="classific_id"/>
+			<result property="classificName" column="classific_name"/>
+		</association>
+	</resultMap>
+	<select id="findProdInfoById" resultMap="productRM">
+		select p.*,c.classific_name from product p  left join classific c on p.classific_id=c.classific_id 
+		where product_id=#{productid}
+	</select>
+	<select id="findAllClass" resultMap="classRM">
+	select p.*,ca.class_all_name,ca.class_all_id,c.classific_name 
+	from class_all ca left join classific c on ca.class_all_id=c.classific_all_id 
+	left join product p on c.classific_id=p.classific_id
+	</select>
+	<resultMap type="ClassAll" id="classRM">
+		<id property="classAllId" column="class_all_id" />
+		<result property="classAllName" column="class_all_name"/>
+		 <collection property="classificList" ofType="Classific" >
+			<id property="classificId" column="classific_id"/>
+			<result property="classificName" column="classific_name"/>
+			<collection property="productList" ofType="Product" resultMap="productRM"></collection>
+		</collection> 
+	</resultMap>
+	
+	<select id="findCount" resultType="int">
+	select count(*) from product 
+	</select>
+	<select id="findByPage" resultMap="productRM">
+	select p.*,c.classific_name from product p  left join classific c on p.classific_id=c.classific_id
+	 <where>
+	<if test="minprice!=null">price>#{minprice}</if>
+	<if test="maxprice!=null"> and price&lt;#{maxprice}</if>
+	<if test="classificId!=null"> and p.classific_id=#{classificId}</if>
+	<if test="proName!=null"> and pro_name like concat("%",#{proName},"%")</if>
+	</where>
+	<if test="sort==1"> order by price</if>
+	<if test="sort==0"> order by price desc </if>
+	 limit #{currentPage},
+	#{perpage}
+	</select>
+	<select id="findCountByKey" resultType="int">
+	select count(*) from product p  left join classific c on p.classific_id=c.classific_id
+	 <where>
+		<if test="minprice!=null">price>#{minprice}</if>
+		<if test="maxprice!=null"> and price&lt;#{maxprice}</if>
+		<if test="classificId!=null"> and p.classific_id=#{classificId}</if>
+		<if test="proName!=null"> and pro_name like concat("%",#{proName},"%")</if>
+	</where>
+	</select>
+	
+	
+	
+	
+	
+</mapper>

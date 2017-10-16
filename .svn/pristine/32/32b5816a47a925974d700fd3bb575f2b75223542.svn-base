@@ -1,0 +1,49 @@
+package com.boot.controller;
+
+import com.boot.pojo.Order;
+import com.boot.pojo.User;
+import com.boot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+    
+    @RequestMapping("/userhome")
+    public String userHome(HttpSession session) {
+    	if(session.getAttribute("LoginUser") == null) {
+    		return "login/login";
+    	}
+    	User user = userService.findUserByName(((User)session.getAttribute("LoginUser")).getUsername());
+    	session.setAttribute("LoginUser", user);
+    	return "user/userInfo";
+    }
+    
+    @RequestMapping("/updateUser")
+    public String updateUser(User user) {
+    	userService.updateUser(user);
+    	return "redirect:/user/userhome";
+    }
+    
+    @RequestMapping("/userSpending")
+    public String userSpending() {
+    	return "user/userSpending";
+    }
+    
+    @RequestMapping("/userCollect")
+    public String userCollect() {
+    	return "user/userCollect";
+    }
+
+}

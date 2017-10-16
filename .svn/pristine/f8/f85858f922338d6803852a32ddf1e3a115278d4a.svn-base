@@ -1,0 +1,9 @@
+package com.boot.mapper;
+
+import com.boot.pojo.User;
+
+public interface UserInfoMapper {
+
+	public void updateUserInfo(User user);
+
+}

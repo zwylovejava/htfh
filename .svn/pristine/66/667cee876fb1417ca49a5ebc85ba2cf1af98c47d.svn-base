@@ -1,0 +1,10 @@
+package com.boot.mapper;
+
+import com.boot.pojo.User;
+
+import java.util.List;
+
+public interface UserMapper {
+    public List<User> findAll();
+
+}

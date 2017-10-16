@@ -1,0 +1,81 @@
+package com.boot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.ClassAll;
+import com.boot.pojo.Classific;
+import com.boot.pojo.Page;
+import com.boot.pojo.Product;
+import com.boot.service.ClassificService;
+import com.boot.service.ProductService;
+
+@Controller
+public class ProductController {
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private ClassificService classificService;
+	@RequestMapping("/product/findAll")
+	public String findAll(Model model,Page page){
+		Number count = productService.findCount();
+		page.setRecords(count.intValue());
+		List<Product> productCurrentPageList=productService.findByPage(page.getPerpage(),page.getCurrentPage());
+		List<Product> productList =productService.findAll();
+		model.addAttribute("page", page);
+		List<Classific> classificList =classificService.findAll();
+		model.addAttribute("classificList", classificList);
+		model.addAttribute("productList", productList);
+		model.addAttribute("productCurrentPageList", productCurrentPageList);
+		return "product/prodList";
+	}
+	@RequestMapping("/product/findProdInfo")
+	public String findProdInfo(Model model,String productId){
+		Product product=productService.findProdInfoById(productId);
+		model.addAttribute("product", product);
+		return "product/prodInfo";
+	}
+	@RequestMapping("/product/findProductByprice")
+	public String findProductByprice(String minprice,String maxprice,Model model,Page page){
+		Double _min=null;
+		Double _max=null;
+		if(!(minprice==null)&&!("".equals(minprice))){
+			_min=Double.parseDouble(minprice.trim());
+		}
+		if(!(maxprice==null)&&!("".equals(maxprice))){
+			_max=Double.parseDouble(maxprice.trim());
+		}
+		List<Product> productList =productService.findProductByprice(_min,_max,page.getPerpage(),page.getCurrentPage());
+		page.setRecords(productList.size());
+		List<Classific> classificList =classificService.findAll();
+		model.addAttribute("minprice", _min);
+		model.addAttribute("maxprice", _max);
+		model.addAttribute("classificList", classificList);
+		model.addAttribute("productCurrentPageList", productList);
+		model.addAttribute("page", page);
+		return "product/prodListQueryPrice";
+	}
+	@RequestMapping("/product/findProductOrderByPrice")
+	public String findProductOrderByPrice(Model model,Page page,Integer state){
+		
+		List<Product> productList =productService.findProductOrderByPrice(page.getPerpage(),page.getCurrentPage(),state);
+		page.setRecords(productList.size());
+		List<Classific> classificList =classificService.findAll();
+		model.addAttribute("classificList", classificList);
+		model.addAttribute("productCurrentPageList", productList);
+		model.addAttribute("page", page);
+		return "product/prodListQueryPrice";
+	}
+	
+	
+
+	
+	
+	
+
+
+}

@@ -1,0 +1,29 @@
+package com.boot.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.boot.pojo.OrderItem;
+
+public interface OrderItemMapper {
+
+	public List<OrderItem> findAllByOrderId(List<String> oIdList);
+
+	public void deleteOrderByOrderId(String orderId);
+
+	/**通过类别名查询该类商品总销量
+	 * @param classific 商品类别
+	 * @return 返回查询到得商品销售数量
+	 */
+	public Integer findSellListByClassific(@Param("classific")String classific);
+	
+	/**通过类别名查询该类商品总销量
+	 * @param classific 商品类别
+	 * @return 返回查询到得商品销售数量
+	 */
+	public Double findSaleByClassific(@Param("classific")String classific);
+
+	public List<OrderItem> findByOrderId(String orderId);
+
+}

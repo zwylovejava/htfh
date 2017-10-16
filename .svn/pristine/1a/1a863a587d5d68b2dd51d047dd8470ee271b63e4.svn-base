@@ -1,0 +1,55 @@
+package com.boot.controller;
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.Product;
+import com.boot.service.ProductService;
+
+@Controller
+public class CartController {
+	
+	@Autowired
+	private ProductService productService;
+	
+	@RequestMapping("cart/cartadd")
+	public String cartAdd(String[] productId,HttpSession session) {
+		Product product = productService.findProdInfoById(productId[0]);
+		Object cartObj = session.getAttribute("cart");
+		Map<Product,Integer> cart = null;
+		if(cartObj!=null){
+			cart = (Map<Product,Integer>)cartObj;
+		}else{
+			cart = new HashMap<Product, Integer>();
+			session.setAttribute("cart", cart);
+		}
+		if(cart.containsKey(product)){
+			cart.put(product, cart.get(product)+1);
+		}else{
+			cart.put(product, 1);
+		}
+		return "cart/cartList";
+	}
+	
+	@RequestMapping("cart/cartdelete")
+	public String cartdelete(String[] productId,HttpSession session) {
+		
+		Map<Product, Integer> cart = (Map<Product, Integer>) session.getAttribute("cart");
+		Product product = new Product();
+		product.setProductId(productId[0]);
+		if(cart.get(product)!=null&&cart.get(product)>0) {
+			cart.put(product, cart.get(product)-1);
+		}else{
+			cart.remove(product);
+		}
+		return "cart/cartList";
+	}
+	
+}

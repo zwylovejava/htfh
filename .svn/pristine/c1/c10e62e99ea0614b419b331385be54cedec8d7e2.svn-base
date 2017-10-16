@@ -1,0 +1,113 @@
+body{
+    font-family: Microsoft Yahei;
+    font-size: 15px;
+}
+
+fieldset{    width: 650px;  
+			margin-right: 400px;
+
+
+
+  }
+
+
+.item{
+    height: 56px;
+    line-height: 30px;
+    margin: 10px;
+}
+
+.item .item-label{
+    float: left;
+    width: 80px;
+    text-align: right;
+}
+
+.item-text{
+    float: left;
+    width: 180px;
+    height:25px;
+    padding: 9px 25px 9px 5px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.item-select{
+    float: left;
+    height: 30px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 6px 0px;
+}
+
+.item-file{
+    float: left;
+    height: 30px;
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 6px 0px;
+}
+
+.loginbtn{
+    
+	width: 296px;
+	height: 35px;
+	background: #90B831;
+	line-height: 33px;
+	color: #fff;
+	border: none;
+	margin-top: 12px;
+	margin-left:-300px;
+	display: inline-block;
+	text-align: center;
+	color: #fff;
+	font: 15px '微软雅黑';
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-transition: all 0.15s ease;
+	-moz-transition: all 0.15s ease;
+	-o-transition: all 0.15s ease;
+	-ms-transition: all 0.15s ease;
+	transition: all 0.15s ease;
+	cursor: pointer;
+}
+
+input.error{
+    border: 1px solid #E6594E;
+}
+
+input.highlight{
+    border: 1px solid #7abd54;
+}
+
+label.error{
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 5px;
+    padding-left: 35px;
+    color: red;
+   /* background: url('../images/error.png') no-repeat left;  */
+}
+
+label.tip{
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 5px;
+    padding-left: 35px;
+    color: #aaa;
+    background: url('../image/tip.png') no-repeat left center;
+    padding-left: 35px;
+}
+
+label.valid{
+    background: url('../image/valid.png') no-repeat left center;
+}

@@ -1,0 +1,31 @@
+package com.boot.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.boot.pojo.ClassAll;
+import com.boot.pojo.Product;
+
+public interface ProductMapper {
+
+	List<Product> findAll();
+
+	Product findProdInfoById(String productId);
+
+	List<ClassAll> findAllClass();
+
+	Number findCount();
+
+	List<Product> findByPage(@Param("perpage")Integer perpage, @Param("currentPage")Integer currentPage);
+
+	List<Product> findProductByprice(@Param("minprice")Double minprice, @Param("maxprice")Double maxprice, 
+			@Param("perpage")Integer perpage, @Param("currentPage")Integer currentpage,@Param("classificId")String classificId
+			,@Param("proName")String searchName);
+
+	List<Product> findProductOrderByPrice(@Param("perpage")Integer perpage, @Param("currentPage")Integer currentpage);
+
+	List<Product> findProductOrderByPriceDesc(@Param("perpage")Integer perpage, @Param("currentPage")Integer currentpage);
+
+}

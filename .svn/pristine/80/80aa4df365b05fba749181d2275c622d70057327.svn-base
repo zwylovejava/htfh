@@ -1,0 +1,81 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../base.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登陆</title>
+<link href="${ctx}/css/base.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/css/css.css" rel="stylesheet" type="text/css">
+<script src="${ctx}/js/jquery-2.1.1.min.js"></script>
+<style>
+.tab {
+	overflow: hidden;
+	margin-top: 20px; margin-bottom:-1px;
+}
+.tab li {
+	display: block;
+	float: left;
+	width: 100px;padding:10px 20px; cursor:pointer; border:1px solid #ccc; 
+}
+.tab li.on {
+	background: #90B831; color:#FFF;padding:10px 20px;
+}
+.conlist {padding:30px; border:1px solid #ccc; width:300px;}
+.conbox {
+	display: none;
+}
+</style>
+<script>
+$(function(){
+	$(".tab li").each(function(i){
+		$(this).click(function(){
+		$(this).addClass("on").siblings().removeClass("on");
+		$(".conlist .conbox").eq(i).show().siblings().hide();
+		})
+	})
+})
+</script>
+</head>
+
+<body>
+<div class="login-top">
+    <div class="wrapper">
+        <div class="fl font30"><img src="${ctx}/images/login.png" height="60px"/></div>
+        <div class="fr">您好，欢迎为生活充电在线！</div>
+    </div>
+</div>
+<div class="l_main">
+    <div class="l_bttitle2"> 
+        <!-- <h2>登录</h2>-->
+        <h2><a href="${ctx}/home">< 返回首页</a></h2>
+    </div>
+    <div class="loginbox fl">
+
+        <div class="conlist">
+        	<span style="color: RED;font-size: 18PX">
+        	<c:if test="${!empty errorInfo}">
+					${errorInfo}
+		    </c:if>
+		    </span>
+        <form action="${ctx}/tologin" method="POST">
+            <div class="conbox" style="display:block;">
+                <p>
+                    <input type="text" class="loginusername" name="username" title="请您输入用户名"/>
+                </p>
+                <p>
+                    <input type="password" class="loginuserpassword" name="password" title="请您输入密码"/>
+                </p>
+                <p><span class="fl fntz14 margin-t10"><a href="${ctx}/regist" style="color:#ff6000">立即注册</a></span><span class="fr fntz12 margin-t10"><a href="${ctx}/findPassword">忘记密码？</a></span></p>
+                <p>
+                    <input type="submit" class="loginbtn" value="登  录">
+                </p>
+            </div>
+       </form>   
+        </div>
+    </div>   
+    <div class="fr margin-r100 margin-t45"><img src="${ctx}/images/login-pic.jpg" width="507" height="325"></div>
+</div>
+</body>
+</html>

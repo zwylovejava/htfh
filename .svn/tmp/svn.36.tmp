@@ -1,0 +1,117 @@
+package com.boot.service;
+
+import com.boot.mapper.OrderMapper;
+import com.boot.mapper.UserInfoMapper;
+import com.boot.mapper.UserMapper;
+import com.boot.pojo.Order;
+import com.boot.pojo.User;
+import com.boot.tool.MD5HashPassword;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired    //userMapper对象应该由spring创建
+    private UserMapper userMapper;
+    @Autowired    //userInfoMapper对象应该由spring创建
+    private UserInfoMapper userInfoMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Override
+    public List<User> findAll() {
+        return userMapper.findAll();
+    }
+
+	@Override
+	public void updateUser(User user) {
+		userInfoMapper.updateUserInfo(user);
+		userMapper.updateUser(user);
+	}
+
+	@Override
+	public User findUserByName(String username) {
+		return userMapper.findUserByName(username);
+	}
+
+	@Override
+	public User ajaxCheckName(String username) {
+		
+		return userMapper.ajaxCheckName(username);
+	}
+
+
+	@Override
+	public User ajaxPhoneNum(String phoneNum) {
+		
+		return userMapper.ajaxPhoneNum(phoneNum);
+	}
+
+
+	@Override
+	public User longinByUP(String username, String password) {
+		
+		return userMapper.longinByUP(username,password);
+	}
+
+	@Override
+	public void updatePasswordByphone(String password, String phoneNum) {
+		User user = userMapper.ajaxPhoneNum(phoneNum);
+		password = MD5HashPassword.getPassword(user.getUsername(), password);
+		userMapper.updatePasswordByphone(password,phoneNum);
+		
+	}
+
+	@Override
+	public void insertUser(User user) {
+		String uuid = UUID.randomUUID().toString();
+		user.setUserId(uuid);
+		String password = MD5HashPassword.getPassword(user.getUsername(), user.getPassword());
+		user.setPassword(password);
+		userMapper.insertUser(user);
+		
+	}
+
+	@Override
+	public String findCreditByUserInfoId(String userId) {
+		return userInfoMapper.findCreditByUserInfoId(userId);
+	}
+
+	@Override
+	public List<String> findSpendById(String userId) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		List spendInfo = new ArrayList(); //用于返回用户的消费信息
+		String[] spendMonth = new String[6];
+		Integer[] spendMoney = new Integer[6];
+		List<Order> orderList = orderMapper.findAllById(userId); //查询用户的所有消费信息
+		String queryDate = ""; //用于购买时间比对
+		//设定一个6次的循环，统计过去6个月份的消费信息，并拼接成字符串
+		for (int i = 5; i >=0; i--) {
+			double spend = 0; //用于记录月份消费总金额
+			Date date = new Date(); //获取查询时间
+			date.setMonth(date.getMonth()-i); //根据循环次数，计算调整当前查询月份
+			queryDate = sdf.format(date); //将查询时间按格式转换成字符串，用于比对
+			//循环遍历订单列表，统计当前查询月份的消费金额
+			for (Order order : orderList) {
+				String orderDate = sdf.format(order.getOrderTime()); //获取订单时间并按格式转换
+				if(queryDate.equals(orderDate)) {
+					spend = spend + order.getMoney(); //统计满足月份要求的订单消费金额
+				}
+			}
+			spendMonth[spendMonth.length-i-1] = queryDate;
+			spendMoney[spendMoney.length-i-1] = (int)spend;
+		}
+		spendInfo.add(spendMonth);
+		spendInfo.add(spendMoney);
+		return spendInfo;
+	}
+
+}

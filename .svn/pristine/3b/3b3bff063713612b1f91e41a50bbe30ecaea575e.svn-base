@@ -1,0 +1,49 @@
+package com.boot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.ClassAll;
+import com.boot.pojo.Classific;
+import com.boot.pojo.Page;
+import com.boot.pojo.Product;
+import com.boot.service.ClassificService;
+import com.boot.service.ProductService;
+
+@Controller
+public class ProductController {
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private ClassificService classificService;
+	@RequestMapping("/product/findAll")
+	public String findAll(Model model,Page page){
+		Number count = productService.findCount();
+		page.setRecords(count.intValue());
+		List<Product> productCurrentPageList=productService.findByPage(page.getPerpage(),page.getCurrentPage());
+		List<Product> productList =productService.findAll();
+		model.addAttribute("page", page);
+		List<Classific> classificList =classificService.findAll();
+		model.addAttribute("classificList", classificList);
+		model.addAttribute("productList", productList);
+		model.addAttribute("productCurrentPageList", productCurrentPageList);
+		return "product/prodList";
+	}
+	@RequestMapping("/product/findProdInfo")
+	public String findProdInfo(Model model,String productId){
+		Product product=productService.findProdInfoById(productId);
+		model.addAttribute("product", product);
+		return "product/prodInfo";
+	}
+	
+
+	
+	
+	
+
+
+}

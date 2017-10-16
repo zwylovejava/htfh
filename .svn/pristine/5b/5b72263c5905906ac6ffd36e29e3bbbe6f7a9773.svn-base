@@ -1,0 +1,38 @@
+package com.boot.controller;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.boot.pojo.User;
+import com.boot.service.UserService;
+import com.boot.tool.ValidateEmailWebService;
+
+@Controller
+public class LoginController {
+	@Autowired
+	private UserService userService;
+	@RequestMapping("/regist")
+	public String regist(){
+		return "/login/regist";
+	}
+	@RequestMapping("/ajaxCheckname")
+	public void check(String username,HttpServletResponse response) throws IOException {
+		User user = userService.ajaxCheckName(username);
+		response.getWriter().write(user==null?"true":"false");
+	}
+	
+	@RequestMapping("/ajaxCheckEmai")
+	public void checkEmail(String email,HttpServletResponse response) throws IOException {
+		ValidateEmailWebService vali = new ValidateEmailWebService();
+		short num = vali.getValidateEmailWebServiceSoap().validateEmailAddress(email);
+		System.out.println(num);
+		response.getWriter().write(num==1||num==0?"true":"false");
+	}
+	
+	
+}

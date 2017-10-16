@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.ProductMapper">
+
+    <select id="findAll" resultMap="productRM">
+        SELECT p.*,c.CLASSIFIC_NAME FROM product p  LEFT JOIN classific c ON p.CLASSIFIC_ID=c.CLASSIFIC_ID
+    </select>
+	<resultMap type="com.boot.pojo.Product" id="productRM" autoMapping="true">
+		<id property="productId" column="product_id"/>
+		<association property="classific" javaType="com.boot.pojo.Classific">
+			<id property="classificId" column="classific_id"/>
+			<result property="classificName" column="classific_name"/>
+		</association>
+	</resultMap>
+	<select id="findProdInfoById" resultMap="productRM">
+		SELECT p.*,c.CLASSIFIC_NAME FROM product p  LEFT JOIN classific c ON p.CLASSIFIC_ID=c.CLASSIFIC_ID 
+		where product_id=#{productId}
+	</select>
+</mapper>

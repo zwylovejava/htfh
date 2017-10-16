@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.OrderMapper">
+
+    <select id="findAllById" resultMap="orderRM">
+    	select * from orders where user_id = #{userId} order by order_time desc
+	</select>
+	
+	<resultMap type="Order" id="orderRM" autoMapping="true">
+		<id column="order_id" property="orderId"/>
+	</resultMap>
+	
+	<resultMap type="OrderItem" id="orderItemRM" autoMapping="true">
+		<id column="roder_id" property="roderId"/>
+		<association property="product" javaType="Product" resultMap="productRM" ></association>
+	</resultMap>
+	
+	<resultMap type="Product" id="productRM" autoMapping="true">
+		<id column="product_id" property="productId"/>
+	</resultMap>
+	
+	<delete id="deleteOrderByOrderId">
+		delete from orders where order_id = #{orderId}
+	</delete>
+
+	<update id="updateStateByOrderId">
+		update orders set state = #{state} where order_id = #{orderId}
+	</update>
+	
+	<update id="updateDeliveryByOrderId">
+		update orders set delivery = #{delivery} where order_id = #{orderId}
+	</update>
+	
+	<update id="updateConfirmByOrderId">
+		update orders set confirm = #{confirm} where order_id = #{orderId}
+	</update>
+	
+	<select id="findAllByState" resultMap="orderRM">
+    	select * from orders where user_id = #{userId} and state = #{state}
+	</select>
+	
+	<select id="findAllByDelivery" resultMap="orderRM">
+    	select * from orders where user_id = #{userId} and state = #{state} and delivery = #{delivery}
+	</select>
+	
+	<select id="findAllByConfirm" resultMap="orderRM">
+    	select * from orders where user_id = #{userId} and state = #{state} and delivery = #{delivery} and confirm = #{confirm}
+	</select>
+
+	<select id="findOrderByOrderId" resultMap="orderRM">
+    	select * from orders where order_id = #{orderId}
+	</select>
+	
+	<!--  ==============svn_zhu ====================   -->
+	<!-- public void addOrder(Order order); -->
+	<insert id="addOrder" parameterType="Order">
+	
+    insert into orders (order_id, receive_id, user_id, 
+      order_time, money, state, 
+      confirm, delivery)
+    values (#{orderId,jdbcType=VARCHAR}, #{receiveId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{money,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}, 
+      #{confirm,jdbcType=INTEGER}, #{delivery,jdbcType=INTEGER})
+ 
+	</insert>
+	
+	<!-- public void addOrderItem(OrderItem oi); -->
+	<insert id="addOrderItem" parameterType="OrderItem" >
+    insert into order_item (order_id, product_id, buy_num, 
+      assess)
+    values (#{orderId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{buyNum,jdbcType=INTEGER}, 
+      #{assess,jdbcType=VARCHAR})
+  	</insert>
+  
+ 	 <!-- public void findAll(); -->
+ 	  <select id="findAll" resultMap="orderRM_1">
+ 	  
+    	select o.*,r.user_id,r.receive_p,r.area,r.street,r.zcode,r.phone,r.tel,r.addr 
+    	from orders o left join receive r 
+    	on o.receive_id = r.receive_id
+    	order by order_time desc
+		</select>
+	
+	<resultMap type="Order" id="orderRM_1" autoMapping="true">
+		<id property="orderId" column="OrderId"/>
+		<association property="address" javaType="Address" resultMap="addressRM_1">
+		</association>
+	</resultMap>
+	<resultMap type="Address" id="addressRM_1" autoMapping="true"></resultMap>
+	
+	<!-- public List<Order> findbypage(Integer page); -->
+	<select id="findbypage" resultMap="orderRM_1">
+		select o.*,r.user_id,r.receive_p,r.area,r.street,r.zcode,r.phone,r.tel,r.addr 
+    	from orders o left join receive r 
+    	on o.receive_id = r.receive_id
+    	order by order_time desc limit #{page},10
+	</select> 	 
+	
+	<!-- public List<Order> findOrderListbyall(@Param("orderby")Integer orderby, @Param("value")String value, @Param("page")Integer page); -->
+	<select id="findOrderListbyall" resultMap="orderRM_1">
+		select o.*,r.user_id,r.receive_p,r.area,r.street,r.zcode,r.phone,r.tel,r.addr 
+    	from orders o left join receive r 
+    	on o.receive_id = r.receive_id
+    	
+   		<if test="orderby!=1">where</if>
+   		
+   		<if test="orderby==2">order_id</if>
+   		<if test="orderby==3">r.receive_p</if>
+   		<if test="orderby==4">r.phone</if>
+   		
+   		<if test="orderby!=1">like '%${value}%'</if>
+   		
+   		
+    	order by order_time desc limit #{page},10
+	
+	</select>
+	
+	<!-- Integer findOrderListCount -->
+	<select id="findOrderListCount" resultType="java.lang.Integer">
+		select count(*) 
+    	from orders o left join receive r 
+    	on o.receive_id = r.receive_id
+    	
+   		<if test="orderby!=1">where</if>
+   		
+   		<if test="orderby==2">order_id</if>
+   		<if test="orderby==3">r.receive_p</if>
+   		<if test="orderby==4">r.phone</if>
+   		
+   		<if test="orderby!=1">like '%${value}%'</if>
+	</select>
+	<!--  ==============svn_zhu ====================   -->
+	<select id="findStatesById" resultType="java.lang.Integer">
+		select state from orders o join order_item oi on o.order_id=oi.order_id 
+		where oi.product_id=#{productId}
+	</select>
+	
+
+</mapper>

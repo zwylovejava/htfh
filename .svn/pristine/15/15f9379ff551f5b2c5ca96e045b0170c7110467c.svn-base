@@ -1,0 +1,20 @@
+server:
+  port: 8090
+  context-path: /
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://176.114.24.75:3306/springboot
+    username: root
+    password: zwy1989
+    thymeleaf:
+       cache: false
+       mode: LEGACYHTML5
+  mvc:
+    view:
+      prefix: /WEB-INF/pages/
+      suffix: .jsp
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+  type-aliases-package: com.boot.pojo

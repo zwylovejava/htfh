@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.ClassificMapper">
+	<select id="findAll"  resultMap="classificRM">
+		select classific_id,classific_name from classific 
+		<!-- <where> 
+		<if test="classificId!=null">classific_id=#{classificId}</if>
+		</where> --> 
+	</select>
+    <resultMap type="Classific" id="classificRM">
+    	<id property="classificId" column="classific_id"/>
+    	<result property="classificName" column="classific_name"/>
+    </resultMap>
+</mapper>

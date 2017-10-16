@@ -1,0 +1,87 @@
+package com.boot.pojo;
+
+
+public class Product {
+	private String productId;
+	private Classific classific;
+	private String proName;
+	private String description;
+	private Double price;
+	private Integer pnum;
+	private String imageUrl;
+	private String shop;
+	public String getShop() {
+		return shop;
+	}
+	public void setShop(String shop) {
+		this.shop = shop;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	public Classific getClassific() {
+		return classific;
+	}
+	public void setClassific(Classific classific) {
+		this.classific = classific;
+	}
+	public String getProName() {
+		return proName;
+	}
+	public void setProName(String proName) {
+		this.proName = proName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	public Integer getPnum() {
+		return pnum;
+	}
+	public void setPnum(Integer pnum) {
+		this.pnum = pnum;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((productId == null) ? 0 : productId.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (productId == null) {
+			if (other.productId != null)
+				return false;
+		} else if (!productId.equals(other.productId))
+			return false;
+		return true;
+	}
+	
+	
+
+}

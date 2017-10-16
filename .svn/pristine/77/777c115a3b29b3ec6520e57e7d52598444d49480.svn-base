@@ -1,0 +1,9 @@
+package com.boot.mapper;
+
+import com.boot.pojo.Address;
+
+public interface AddressMapper {
+
+	void addAddress(Address address);
+
+}

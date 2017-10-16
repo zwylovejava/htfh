@@ -1,0 +1,20 @@
+package com.boot.pojo;
+
+public class Classific {
+	private String classificId;
+	private String classificName;
+	public String getClassificId() {
+		return classificId;
+	}
+	public void setClassificId(String classificId) {
+		this.classificId = classificId;
+	}
+	public String getClassificName() {
+		return classificName;
+	}
+	public void setClassificName(String classificName) {
+		this.classificName = classificName;
+	}
+	
+
+}

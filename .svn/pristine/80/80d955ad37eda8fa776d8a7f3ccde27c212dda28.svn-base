@@ -1,0 +1,38 @@
+package com.boot.controller;
+
+import com.boot.pojo.User;
+import com.boot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+    
+    @RequestMapping("/userhome")
+    public String userHome(HttpSession session) {
+/*    	if(session.getAttribute("user") == null) {
+    		return "login/login";
+    	}*/
+    	User user = userService.findUserByName("柯南");
+    	session.setAttribute("user", user);
+    	return "user/userInfo";
+    }
+    
+    @RequestMapping("/updateUser")
+    public String updateUser(User user) {
+    	userService.updateUser(user);
+    	return "redirect:/user/userhome";
+    }
+
+}

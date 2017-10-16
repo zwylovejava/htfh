@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.OrderItemMapper">
+
+    <select id="findAllByOrderId" resultMap="orderItemRM">
+    	select * from order_item left join (select product_id as p_id, pro_name, description, price, pnum, image_url, shop, sale_num from product)product on order_item.product_id = product.p_id where order_id in (
+    		<foreach collection="list" item="id" separator=",">
+			#{id}
+			</foreach>
+    	)
+	</select>
+	
+	<resultMap type="OrderItem" id="orderItemRM" autoMapping="true">
+		<id column="roder_id" property="roderId"/>
+		<association property="product" javaType="Product" resultMap="productRM" ></association>
+	</resultMap>
+	
+	<resultMap type="Product" id="productRM" autoMapping="true">
+		<id column="product_id" property="productId"/>
+	</resultMap>
+	
+	<delete id="deleteOrderByOrderId">
+		delete from order_item where order_id = #{orderId}
+	</delete>
+	
+	<select id="findSellListByClassific" resultType="int">
+		SELECT SUM(buy_num) sellNum FROM order_item 
+			LEFT JOIN 
+			(SELECT product_id AS p_id, pro_name FROM product)p 
+			ON order_item.product_id = p.p_id 
+			WHERE p.pro_name LIKE '%${classific}%'
+	</select>
+	
+	<select id="findSaleByClassific" resultType="double">
+		SELECT SUM(money) FROM orders
+			LEFT JOIN 
+			(SELECT order_id AS item_id,product_id AS p_id FROM order_item)item
+			ON order_id = item_id
+			LEFT JOIN
+			(SELECT product_id AS p_id,pro_name AS p_name FROM product)p
+			ON item.p_id = p.p_id
+			WHERE p.p_name LIKE '%${classific}%'
+	</select>
+	
+	<select id="findByOrderId" resultMap="orderItemRM">
+    	select * from order_item left join (select product_id as p_id, pro_name, description, price, pnum, image_url, shop, sale_num from product)product on order_item.product_id = product.p_id where order_id = #{orderId}
+	</select>
+
+</mapper>

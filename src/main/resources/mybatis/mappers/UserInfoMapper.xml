@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.mapper.UserInfoMapper">
+	<update id="updateUserInfo">
+		update user_info
+		<set>
+			<if test="userInfo.name != null">name = #{userInfo.name},</if>
+			<if test="userInfo.gender != null">gender = #{userInfo.gender},</if>
+			<if test="userInfo.qq != null">qq = #{userInfo.qq},</if>
+		</set>
+		where user_info_id = #{userId}
+	</update>
+</mapper>
